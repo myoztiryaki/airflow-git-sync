@@ -6,7 +6,6 @@ import boto3, logging, botocore
 from botocore.config import Config
 import io, re
 
-
 def get_s3_client(endpoint_url, access_key_id, secret_access_key):
     s3 = boto3.client('s3',
                       endpoint_url=endpoint_url,
