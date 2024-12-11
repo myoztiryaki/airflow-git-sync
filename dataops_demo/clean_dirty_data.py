@@ -70,7 +70,7 @@ if __name__ == "__main__":
     ap.add_argument("-sak", "--secret_access_key", required=True, type=str, default="dataopsadmin",
                     help="Your secret_access_key. Default: 'dataopsadmin'")
     
-    ap.add_argument("-c", "--conn", required=True, type=str, default="postgresql://train:Ankara06@postgres:5432/traindb",
+    ap.add_argument("-c", "--conn", required=True, type=str, default="postgresql://train:Ankara06@localhost:5432/traindb",
                     help="Your DB connection string. Example postgresql://user:password@localhost:5432/mydb. Default: ''")
     
     args = vars(ap.parse_args())
