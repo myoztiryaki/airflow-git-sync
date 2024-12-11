@@ -33,7 +33,8 @@ def load_df_from_s3(bucket, key, s3, sep=",", index_col=None, usecols=None):
 def data_cleaner(df):
 
     def clean_store_location(st_loc):
-        return re.sub(r'[^\w\s]', '', st_loc).strip()
+    # Özel karakterleri temizle ve boşlukları koru
+        return re.sub(r'[^\w\s]', '', st_loc).strip() if isinstance(st_loc, str) else 'Unknown'
 
     def clean_product_id(pd_id):
         matches = re.findall(r'\d+', pd_id)
@@ -42,13 +43,13 @@ def data_cleaner(df):
         return pd_id
 
     def remove_dollar(amount):
-        return float(amount.replace('$', ''))
+        return float(amount.replace('$', '')) if isinstance(amount, str) else amount
 
-    df['STORE_LOCATION'] = df['STORE_LOCATION'].map(lambda x: clean_store_location(x)if x is not None else 'Unknown')
+    df['STORE_LOCATION'] = df['STORE_LOCATION'].apply(lambda x: clean_store_location(x) if pd.notna(x) else 'Unknown')
     df['PRODUCT_ID'] = df['PRODUCT_ID'].map(lambda x: clean_product_id(x))
 
     for to_clean in ['MRP', 'CP', 'DISCOUNT', 'SP']:
-        df[to_clean] = df[to_clean].map(lambda x: remove_dollar(x))
+        df[to_clean] = df[to_clean].apply(lambda x: remove_dollar(x))
 
     return df
 
