@@ -44,7 +44,7 @@ def data_cleaner(df):
     def remove_dollar(amount):
         return float(amount.replace('$', ''))
 
-    df['STORE_LOCATION'] = df['STORE_LOCATION'].map(lambda x: clean_store_location(x))
+    df['STORE_LOCATION'] = df['STORE_LOCATION'].map(lambda x: clean_store_location(x)if x is not None else 'Unknown')
     df['PRODUCT_ID'] = df['PRODUCT_ID'].map(lambda x: clean_product_id(x))
 
     for to_clean in ['MRP', 'CP', 'DISCOUNT', 'SP']:
